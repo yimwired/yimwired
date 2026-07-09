@@ -6,7 +6,7 @@ I build things that ship — web experiences, AI agents, trading systems and con
 
 | Project | What it is |
 | --- | --- |
-| **WebPV** | Personal portfolio + *The Lab* — the same portfolio rebuilt in 6 visual languages (real-time 3D, Apple-keynote cinematic, premium SaaS, sci-fi HUD, luxury editorial, Swiss minimal) |
+| **[WebPV](https://github.com/yimwired/WebPV)** | Personal portfolio + *[The Lab](https://webpv.vercel.app/labs)* — the same portfolio rebuilt in 6 visual languages (real-time 3D, Apple-keynote cinematic, premium SaaS, sci-fi HUD, luxury editorial, Swiss minimal) |
 | **AURUM** | Automated XAU/USD trading terminal — 12 strategy engines on MT5, session-aware scanning, live risk controls |
 | **Jarvis (Moon Fleet)** | Multi-agent AI orchestrator — 11 specialized Claude agents behind one commander |
 | **Affiliate Publisher** | One post → YouTube, TikTok, Shopee Shorts & Lemon8 at once |
@@ -19,6 +19,6 @@ I build things that ship — web experiences, AI agents, trading systems and con
 ## Reach me
 
 - 📫 **yimwired@gmail.com**
-- 🌐 Portfolio: coming soon (The Lab — pick your universe)
+- 🌐 Portfolio: **[webpv.vercel.app](https://webpv.vercel.app)** — try [The Lab](https://webpv.vercel.app/labs): one portfolio, six universes
 
 *Open for freelance web work — fast turnaround, distinctive design, no templates.*
