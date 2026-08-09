@@ -14,6 +14,9 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const USER = "yimwired";
+
+// Both cards sit side by side in the README, so they share one size.
+const CARD = { width: 420, height: 236 };
 const ASSETS_DIR = join(dirname(fileURLToPath(import.meta.url)), "..", "assets");
 
 const PALETTE = {
@@ -163,7 +166,8 @@ const compact = (value) =>
 
 const megabytes = (bytes) => `${(bytes / 1_000_000).toFixed(1)} MB`;
 
-function cardShell(width, height, body) {
+function cardShell(body) {
+  const { width, height } = CARD;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img">
   <defs>
     <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">
@@ -201,8 +205,6 @@ function renderStatsCard(profile) {
     .join("\n");
 
   return cardShell(
-    420,
-    236,
     `  <text x="32" y="46" fill="${PALETTE.label}" font-family="${FONT_MONO}" font-size="11" letter-spacing="3">GITHUB / @${USER.toUpperCase()}</text>
   <rect x="32" y="60" width="356" height="1.5" rx="0.75" fill="url(#brand)" opacity="0.75"/>
 ${grid}`,
@@ -210,9 +212,13 @@ ${grid}`,
 }
 
 function renderActivityCard(profile) {
+  const ROW_HEIGHT = 36;
+  // Centre the rows in the shared card height so both cards end on the same line.
+  const firstRow = (CARD.height - profile.recent.length * ROW_HEIGHT) / 2 + 42;
+
   const rows = profile.recent
     .map((repo, index) => {
-      const y = 92 + index * 36;
+      const y = firstRow + index * ROW_HEIGHT;
       const accent = PALETTE.ramp[index % PALETTE.ramp.length];
       const language = repo.language
         ? `\n  <text x="304" y="${y}" fill="${PALETTE.muted}" font-family="${FONT_MONO}" font-size="11" text-anchor="end">${escapeText(repo.language)}</text>`
@@ -225,8 +231,6 @@ function renderActivityCard(profile) {
     .join("\n");
 
   return cardShell(
-    420,
-    88 + profile.recent.length * 36,
     `  <text x="32" y="46" fill="${PALETTE.label}" font-family="${FONT_MONO}" font-size="11" letter-spacing="3">RECENT PUSHES</text>
   <rect x="32" y="60" width="356" height="1.5" rx="0.75" fill="url(#brand)" opacity="0.75"/>
 ${rows}`,
