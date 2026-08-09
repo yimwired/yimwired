@@ -32,13 +32,16 @@ const FONT_MONO = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
 
 /* ---------------------------------------------------------------- data ---- */
 
-async function api(path) {
+async function request(path) {
   const headers = { Accept: "application/vnd.github+json", "User-Agent": USER };
   if (process.env.GITHUB_TOKEN) {
     headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
   }
+  return fetch(`https://api.github.com${path}`, { headers });
+}
 
-  const response = await fetch(`https://api.github.com${path}`, { headers });
+async function api(path) {
+  const response = await request(path);
   if (!response.ok) {
     throw new Error(`GitHub API ${response.status} on ${path}`);
   }
@@ -66,9 +69,7 @@ async function collectProfile() {
     followers: user.followers,
     languageCount: bytesPerLanguage.size,
     totalBytes,
-    // The commit search is the only public count that spans every repo at once;
-    // it is optional, so a failure degrades the card instead of breaking the build.
-    commits: await countPublicCommits(),
+    commits: await countCommits(ownRepos),
     recent: recentlyPushed(ownRepos),
   };
 }
@@ -103,13 +104,53 @@ function relativeAge(isoDate, now = new Date()) {
   return `${Math.floor(days / 365)}y ago`;
 }
 
-async function countPublicCommits() {
-  try {
-    const result = await api(`/search/commits?q=author:${USER}&per_page=1`);
-    return result.total_count;
-  } catch {
-    return null;
+/**
+ * Commits authored by USER across their public repos.
+ *
+ * Three tempting shortcuts are all wrong here:
+ *   /search/commits    - the index answers differently per token, so a personal
+ *                        token and the Actions GITHUB_TOKEN disagreed by ~200.
+ *   ?author=USER       - silently misses commits GitHub failed to map back to
+ *                        the account (one repo reported 0 of its 6).
+ *   every non-bot commit - counts collaborators' work as our own (one shared
+ *                        repo is 28 commits by a teammate).
+ * Paging and matching the author explicitly is slower but stable across runs.
+ */
+async function countCommits(repos) {
+  let total = 0;
+  for (const repo of repos) {
+    total += await countCommitsIn(repo.name);
   }
+  return total;
+}
+
+async function countCommitsIn(repo, maxPages = 20) {
+  let count = 0;
+
+  for (let page = 1; page <= maxPages; page += 1) {
+    const response = await request(`/repos/${USER}/${repo}/commits?per_page=100&page=${page}`);
+
+    // 409 is GitHub's answer for an empty repository.
+    if (response.status === 409) return count;
+    if (!response.ok) throw new Error(`GitHub API ${response.status} on ${repo} commits`);
+
+    const commits = await response.json();
+    count += commits.filter(isOwnCommit).length;
+
+    if (commits.length < 100) break;
+  }
+
+  return count;
+}
+
+// Local git identities that belong to USER but are not always mapped back to
+// the GitHub account by the API.
+const OWN_AUTHOR_NAMES = new Set(["yimwired", "Nuttapon Yimnoi"]);
+
+function isOwnCommit(commit) {
+  if (commit.author?.type === "Bot") return false;
+  if (commit.author?.login) return commit.author.login === USER;
+  return OWN_AUTHOR_NAMES.has(commit.commit?.author?.name ?? "");
 }
 
 /* --------------------------------------------------------------- render --- */
@@ -148,7 +189,7 @@ function renderStatsCard(profile) {
   // vanity counts, and a card full of zeroes reads worse than no card.
   const metrics = [
     [compact(profile.repoCount), "PUBLIC REPOS"],
-    [profile.commits === null ? "n/a" : compact(profile.commits), "COMMITS"],
+    [compact(profile.commits), "COMMITS"],
     [compact(profile.languageCount), "LANGUAGES"],
     [megabytes(profile.totalBytes), "CODE SHIPPED"],
   ];
