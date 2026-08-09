@@ -50,7 +50,7 @@ Designed, built and operated end to end, solo.
 
 ### 🤝 Contact me
 
-<a href="mailto:yimwired@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white" /></a> <a href="https://webpv.vercel.app"><img src="https://img.shields.io/badge/Portfolio-6366F1?style=flat-square&logo=vercel&logoColor=white" /></a> <a href="https://github.com/yimwired"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white" /></a>
+<a href="mailto:yimwired@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white" /></a> <a href="https://webpv.vercel.app"><img src="https://img.shields.io/badge/Portfolio-6366F1?style=flat-square&logo=vercel&logoColor=white" /></a> <a href="https://github.com/yimwired"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white" /></a> <a href="https://discord.com/users/839543342223589387"><img src="https://img.shields.io/badge/Discord-5865F2?style=flat-square&logo=discord&logoColor=white" /></a> <a href="https://www.facebook.com/share/1FG4y85ePs/"><img src="https://img.shields.io/badge/Facebook-1877F2?style=flat-square&logo=facebook&logoColor=white" /></a>
 
 <img src="./assets/rule.svg" alt="" width="100%" />
 
