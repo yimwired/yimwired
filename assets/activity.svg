@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="420" height="232" viewBox="0 0 420 232" role="img">
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="236" viewBox="0 0 420 236" role="img">
   <defs>
     <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%" stop-color="#818CF8"/>
@@ -6,24 +6,24 @@
       <stop offset="100%" stop-color="#A78BFA"/>
     </linearGradient>
   </defs>
-  <rect x="0.5" y="0.5" width="419" height="231" rx="18"
+  <rect x="0.5" y="0.5" width="419" height="235" rx="18"
         fill="#08080C" stroke="#FFFFFF14"/>
   <text x="32" y="46" fill="#52525B" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" letter-spacing="3">RECENT PUSHES</text>
   <rect x="32" y="60" width="356" height="1.5" rx="0.75" fill="url(#brand)" opacity="0.75"/>
-  <circle cx="37" cy="88" r="4" fill="#818CF8"/>
-  <text x="52" y="92" fill="#E4E4E7" font-family="Inter, ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="14">YoutubeShorts</text>
-  <text x="304" y="92" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" text-anchor="end">Python</text>
-  <text x="388" y="92" fill="#52525B" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" text-anchor="end">6h ago</text>
-  <circle cx="37" cy="124" r="4" fill="#22D3EE"/>
-  <text x="52" y="128" fill="#E4E4E7" font-family="Inter, ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="14">WebPV</text>
-  <text x="304" y="128" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" text-anchor="end">TypeScript</text>
-  <text x="388" y="128" fill="#52525B" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" text-anchor="end">10h ago</text>
-  <circle cx="37" cy="160" r="4" fill="#A78BFA"/>
-  <text x="52" y="164" fill="#E4E4E7" font-family="Inter, ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="14">240-319-study-hub</text>
-  <text x="304" y="164" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" text-anchor="end">HTML</text>
-  <text x="388" y="164" fill="#52525B" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" text-anchor="end">17h ago</text>
-  <circle cx="37" cy="196" r="4" fill="#5EC8F0"/>
-  <text x="52" y="200" fill="#E4E4E7" font-family="Inter, ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="14">ai-ml-lessons</text>
-  <text x="304" y="200" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" text-anchor="end">Jupyter Notebook</text>
-  <text x="388" y="200" fill="#52525B" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" text-anchor="end">20h ago</text>
+  <circle cx="37" cy="84" r="4" fill="#818CF8"/>
+  <text x="52" y="88" fill="#E4E4E7" font-family="Inter, ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="14">YoutubeShorts</text>
+  <text x="304" y="88" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" text-anchor="end">Python</text>
+  <text x="388" y="88" fill="#52525B" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" text-anchor="end">6h ago</text>
+  <circle cx="37" cy="120" r="4" fill="#22D3EE"/>
+  <text x="52" y="124" fill="#E4E4E7" font-family="Inter, ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="14">WebPV</text>
+  <text x="304" y="124" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" text-anchor="end">TypeScript</text>
+  <text x="388" y="124" fill="#52525B" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" text-anchor="end">10h ago</text>
+  <circle cx="37" cy="156" r="4" fill="#A78BFA"/>
+  <text x="52" y="160" fill="#E4E4E7" font-family="Inter, ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="14">240-319-study-hub</text>
+  <text x="304" y="160" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" text-anchor="end">HTML</text>
+  <text x="388" y="160" fill="#52525B" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" text-anchor="end">17h ago</text>
+  <circle cx="37" cy="192" r="4" fill="#5EC8F0"/>
+  <text x="52" y="196" fill="#E4E4E7" font-family="Inter, ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="14">ai-ml-lessons</text>
+  <text x="304" y="196" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" text-anchor="end">Jupyter Notebook</text>
+  <text x="388" y="196" fill="#52525B" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" text-anchor="end">21h ago</text>
 </svg>
