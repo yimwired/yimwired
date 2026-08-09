@@ -15,8 +15,9 @@ import { fileURLToPath } from "node:url";
 
 const USER = "yimwired";
 
-// Both cards sit side by side in the README, so they share one size.
+// The first two cards sit side by side in the README, so they share one size.
 const CARD = { width: 420, height: 236 };
+const WIDE_CARD = { width: 860, height: 280 };
 const ASSETS_DIR = join(dirname(fileURLToPath(import.meta.url)), "..", "assets");
 
 const PALETTE = {
@@ -27,6 +28,8 @@ const PALETTE = {
   text: "#E4E4E7",
   ramp: ["#818CF8", "#22D3EE", "#A78BFA", "#5EC8F0"],
   rest: "#3F3F46",
+  // Contribution heat, quietest to loudest.
+  heat: ["#15151B", "#312E81", "#4F46E5", "#22D3EE", "#67E8F9"],
 };
 
 const FONT_SANS =
@@ -51,6 +54,87 @@ async function api(path) {
   return response.json();
 }
 
+const CALENDAR_QUERY = `query($login: String!) {
+  user(login: $login) {
+    contributionsCollection {
+      contributionCalendar {
+        totalContributions
+        weeks { contributionDays { date contributionCount } }
+      }
+    }
+  }
+}`;
+
+/**
+ * The contribution calendar, which counts private work too when the token is
+ * allowed to see it. Returns null when the token cannot run the query at all,
+ * so the caller can fall back to public commit dates.
+ */
+async function fetchCalendar() {
+  if (!process.env.GITHUB_TOKEN) return null;
+
+  const response = await fetch("https://api.github.com/graphql", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+      "User-Agent": USER,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ query: CALENDAR_QUERY, variables: { login: USER } }),
+  });
+
+  if (!response.ok) return null;
+
+  const payload = await response.json();
+  const calendar =
+    payload.data?.user?.contributionsCollection?.contributionCalendar ?? null;
+  if (!calendar) return null;
+
+  return calendar.weeks
+    .flatMap((week) => week.contributionDays)
+    .map((day) => ({ date: day.date, count: day.contributionCount }));
+}
+
+const DAY_MS = 86_400_000;
+const isoDay = (date) => date.toISOString().slice(0, 10);
+
+/** A 365-day calendar rebuilt from public commit timestamps. */
+function calendarFromCommits(commitDates, today) {
+  const perDay = new Map();
+  for (const iso of commitDates) {
+    const day = iso.slice(0, 10);
+    perDay.set(day, (perDay.get(day) ?? 0) + 1);
+  }
+
+  const days = [];
+  for (let offset = 364; offset >= 0; offset -= 1) {
+    const day = isoDay(new Date(today.getTime() - offset * DAY_MS));
+    days.push({ date: day, count: perDay.get(day) ?? 0 });
+  }
+  return days;
+}
+
+/**
+ * Current and longest run of consecutive active days. A quiet today does not
+ * break the current streak until tomorrow, the same rule GitHub's own graph uses.
+ */
+function streaks(days) {
+  let longest = 0;
+  let run = 0;
+  for (const day of days) {
+    run = day.count > 0 ? run + 1 : 0;
+    longest = Math.max(longest, run);
+  }
+
+  let current = 0;
+  for (let index = days.length - 1; index >= 0; index -= 1) {
+    if (days[index].count > 0) current += 1;
+    else if (index !== days.length - 1) break;
+  }
+
+  return { current, longest };
+}
+
 async function collectProfile() {
   const user = await api(`/users/${USER}`);
   const repos = await api(`/users/${USER}/repos?per_page=100&type=owner`);
@@ -65,6 +149,12 @@ async function collectProfile() {
   }
 
   const totalBytes = [...bytesPerLanguage.values()].reduce((sum, bytes) => sum + bytes, 0);
+  const commitDates = await collectCommitDates(ownRepos);
+
+  // Prefer the contribution calendar: it sees private work, which the public
+  // commit list cannot. Falling back keeps the card working without a token.
+  const calendarDays = await fetchCalendar();
+  const days = calendarDays ?? calendarFromCommits(commitDates, new Date());
 
   return {
     repoCount: ownRepos.length,
@@ -72,8 +162,16 @@ async function collectProfile() {
     followers: user.followers,
     languageCount: bytesPerLanguage.size,
     totalBytes,
-    commits: await countCommits(ownRepos),
+    commits: commitDates.length,
     recent: recentlyPushed(ownRepos),
+    contributions: {
+      days,
+      total: days.reduce((sum, day) => sum + day.count, 0),
+      // A calendar reflects whatever the token may see, private work included;
+      // the commit fallback is public by definition, and the card says so.
+      fromCalendar: calendarDays !== null,
+      ...streaks(days),
+    },
   };
 }
 
@@ -119,31 +217,33 @@ function relativeAge(isoDate, now = new Date()) {
  *                        repo is 28 commits by a teammate).
  * Paging and matching the author explicitly is slower but stable across runs.
  */
-async function countCommits(repos) {
-  let total = 0;
+async function collectCommitDates(repos) {
+  const dates = [];
   for (const repo of repos) {
-    total += await countCommitsIn(repo.name);
+    dates.push(...(await commitDatesIn(repo.name)));
   }
-  return total;
+  return dates;
 }
 
-async function countCommitsIn(repo, maxPages = 20) {
-  let count = 0;
+async function commitDatesIn(repo, maxPages = 20) {
+  const dates = [];
 
   for (let page = 1; page <= maxPages; page += 1) {
     const response = await request(`/repos/${USER}/${repo}/commits?per_page=100&page=${page}`);
 
     // 409 is GitHub's answer for an empty repository.
-    if (response.status === 409) return count;
+    if (response.status === 409) return dates;
     if (!response.ok) throw new Error(`GitHub API ${response.status} on ${repo} commits`);
 
     const commits = await response.json();
-    count += commits.filter(isOwnCommit).length;
+    for (const commit of commits) {
+      if (isOwnCommit(commit)) dates.push(commit.commit.author.date);
+    }
 
     if (commits.length < 100) break;
   }
 
-  return count;
+  return dates;
 }
 
 // Local git identities that belong to USER but are not always mapped back to
@@ -166,8 +266,8 @@ const compact = (value) =>
 
 const megabytes = (bytes) => `${(bytes / 1_000_000).toFixed(1)} MB`;
 
-function cardShell(body) {
-  const { width, height } = CARD;
+function cardShell(body, size = CARD) {
+  const { width, height } = size;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img">
   <defs>
     <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">
@@ -237,14 +337,68 @@ ${rows}`,
   );
 }
 
+function renderContributionsCard(profile) {
+  const { days, total, current, longest, fromCalendar } = profile.contributions;
+
+  const CELL = 12;
+  const GAP = 3;
+  const GRID = { x: 32, y: 150 };
+  const busiest = Math.max(...days.map((day) => day.count), 1);
+
+  const heatAt = (count) => {
+    if (count === 0) return PALETTE.heat[0];
+    const level = Math.ceil((count / busiest) * (PALETTE.heat.length - 1));
+    return PALETTE.heat[Math.min(level, PALETTE.heat.length - 1)];
+  };
+
+  // The calendar always starts on a Sunday, so index order fills columns cleanly.
+  const cells = days
+    .map((day, index) => {
+      const x = GRID.x + Math.floor(index / 7) * (CELL + GAP);
+      const y = GRID.y + (index % 7) * (CELL + GAP);
+      return `  <rect x="${x}" y="${y}" width="${CELL}" height="${CELL}" rx="3" fill="${heatAt(day.count)}"><title>${day.date}: ${day.count}</title></rect>`;
+    })
+    .join("\n");
+
+  const metrics = [
+    [compact(total), fromCalendar ? "CONTRIBUTIONS" : "PUBLIC COMMITS"],
+    [`${current}d`, "CURRENT STREAK"],
+    [`${longest}d`, "LONGEST STREAK"],
+  ];
+
+  const row = metrics
+    .map(([value, label], index) => {
+      const x = 32 + index * 240;
+      return `  <text x="${x}" y="${106}" fill="${PALETTE.text}" font-family="${FONT_SANS}" font-size="32" font-weight="700">${value}</text>
+  <text x="${x}" y="${128}" fill="${PALETTE.muted}" font-family="${FONT_MONO}" font-size="11" letter-spacing="1.6">${label}</text>`;
+    })
+    .join("\n");
+
+  return cardShell(
+    `  <text x="32" y="46" fill="${PALETTE.label}" font-family="${FONT_MONO}" font-size="11" letter-spacing="3">CONTRIBUTIONS / LAST 12 MONTHS</text>
+  <rect x="32" y="60" width="796" height="1.5" rx="0.75" fill="url(#brand)" opacity="0.75"/>
+${row}
+${cells}`,
+    WIDE_CARD,
+  );
+}
+
 /* ----------------------------------------------------------------- main --- */
 
 const profile = await collectProfile();
 await mkdir(ASSETS_DIR, { recursive: true });
 await writeFile(join(ASSETS_DIR, "stats.svg"), renderStatsCard(profile), "utf8");
 await writeFile(join(ASSETS_DIR, "activity.svg"), renderActivityCard(profile), "utf8");
+await writeFile(
+  join(ASSETS_DIR, "contributions.svg"),
+  renderContributionsCard(profile),
+  "utf8",
+);
 
+const { total, current, longest, fromCalendar } = profile.contributions;
 console.log(
-  `cards rebuilt - ${profile.repoCount} repos, ${profile.commits ?? "n/a"} commits, ` +
-    `${profile.languageCount} languages, ${profile.recent.length} recent pushes`,
+  `cards rebuilt - ${profile.repoCount} repos, ${profile.commits} commits, ` +
+    `${profile.languageCount} languages, ${profile.recent.length} recent pushes, ` +
+    `${total} contributions (source: ${fromCalendar ? "calendar" : "public commits"}), ` +
+    `streak ${current}d current / ${longest}d longest`,
 );

@@ -26,7 +26,10 @@ jobs:
       - name: Rebuild the stat cards
         run: node scripts/build-cards.mjs
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # PROFILE_TOKEN is a personal token with read:user; it lets the
+          # contribution card count private work. Without it the card falls
+          # back to public commits and still builds.
+          GITHUB_TOKEN: ${{ secrets.PROFILE_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Commit only when a card actually changed
         run: |
