@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="236" viewBox="0 0 420 236" role="img">
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#818CF8"/>
+      <stop offset="50%" stop-color="#22D3EE"/>
+      <stop offset="100%" stop-color="#A78BFA"/>
+    </linearGradient>
+  </defs>
+  <rect x="0.5" y="0.5" width="419" height="235" rx="18"
+        fill="#08080C" stroke="#FFFFFF14"/>
+  <text x="32" y="46" fill="#52525B" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" letter-spacing="3">GITHUB / @YIMWIRED</text>
+  <rect x="32" y="60" width="356" height="1.5" rx="0.75" fill="url(#brand)" opacity="0.75"/>
+  <text x="32" y="104" fill="#E4E4E7" font-family="Inter, ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="34" font-weight="700">9</text>
+  <text x="32" y="126" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" letter-spacing="1.6">PUBLIC REPOS</text>
+  <text x="232" y="104" fill="#E4E4E7" font-family="Inter, ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="34" font-weight="700">316</text>
+  <text x="232" y="126" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" letter-spacing="1.6">COMMITS</text>
+  <text x="32" y="180" fill="#E4E4E7" font-family="Inter, ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="34" font-weight="700">8</text>
+  <text x="32" y="202" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" letter-spacing="1.6">LANGUAGES</text>
+  <text x="232" y="180" fill="#E4E4E7" font-family="Inter, ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="34" font-weight="700">5.5 MB</text>
+  <text x="232" y="202" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" letter-spacing="1.6">CODE SHIPPED</text>
+</svg>
