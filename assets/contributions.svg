@@ -12,7 +12,7 @@
   <rect x="32" y="60" width="796" height="1.5" rx="0.75" fill="url(#brand)" opacity="0.75"/>
   <text x="32" y="106" fill="#E4E4E7" font-family="Inter, ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="32" font-weight="700">330</text>
   <text x="32" y="128" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" letter-spacing="1.6">CONTRIBUTIONS</text>
-  <text x="272" y="106" fill="#E4E4E7" font-family="Inter, ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="32" font-weight="700">2d</text>
+  <text x="272" y="106" fill="#E4E4E7" font-family="Inter, ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="32" font-weight="700">0d</text>
   <text x="272" y="128" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" letter-spacing="1.6">CURRENT STREAK</text>
   <text x="512" y="106" fill="#E4E4E7" font-family="Inter, ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" font-size="32" font-weight="700">5d</text>
   <text x="512" y="128" fill="#71717A" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" letter-spacing="1.6">LONGEST STREAK</text>
@@ -384,4 +384,5 @@
   <rect x="812" y="165" width="12" height="12" rx="3" fill="#312E81"><title>2026-08-17: 4</title></rect>
   <rect x="812" y="180" width="12" height="12" rx="3" fill="#4F46E5"><title>2026-08-18: 10</title></rect>
   <rect x="812" y="195" width="12" height="12" rx="3" fill="#15151B"><title>2026-08-19: 0</title></rect>
+  <rect x="812" y="210" width="12" height="12" rx="3" fill="#15151B"><title>2026-08-20: 0</title></rect>
 </svg>
