@@ -6,12 +6,12 @@ Web experiences, AI agents, trading systems and content pipelines.
 Designed, built and operated end to end, solo.
 
 - 📍 Thailand · UTC+7
-- 🌐 Portfolio: **[webpv.vercel.app](https://webpv.vercel.app)** · try **[The Lab](https://webpv.vercel.app/labs)**, one portfolio in six visual languages
-- 💼 Open for freelance web work
+- 🌐 Portfolio: **[webpv.yimwired.workers.dev](https://webpv.yimwired.workers.dev)** · try **[The Lab](https://webpv.yimwired.workers.dev/labs)**, the same site rebuilt thirteen ways
+- 💼 Taking client work: **[what I build](https://webpv.yimwired.workers.dev/services)** · **[what it costs](https://webpv.yimwired.workers.dev/pricing)**
 
 ### 🤝 Contact me
 
-<a href="mailto:yimwired@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white" /></a> <a href="https://webpv.vercel.app"><img src="https://img.shields.io/badge/Portfolio-6366F1?style=flat-square&logo=vercel&logoColor=white" /></a> <a href="https://github.com/yimwired"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white" /></a> <a href="https://discord.com/users/839543342223589387"><img src="https://img.shields.io/badge/Discord-5865F2?style=flat-square&logo=discord&logoColor=white" /></a> <a href="https://www.facebook.com/share/1FG4y85ePs/"><img src="https://img.shields.io/badge/Facebook-1877F2?style=flat-square&logo=facebook&logoColor=white" /></a>
+<a href="mailto:yimwired@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white" /></a> <a href="https://webpv.yimwired.workers.dev"><img src="https://img.shields.io/badge/Portfolio-EFA555?style=flat-square&logo=cloudflare&logoColor=1a1400" /></a> <a href="https://github.com/yimwired"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white" /></a> <a href="https://discord.com/users/839543342223589387"><img src="https://img.shields.io/badge/Discord-5865F2?style=flat-square&logo=discord&logoColor=white" /></a> <a href="https://www.facebook.com/share/1FG4y85ePs/"><img src="https://img.shields.io/badge/Facebook-1877F2?style=flat-square&logo=facebook&logoColor=white" /></a>
 
 ## 🛠️ Tech Stack
 
@@ -21,7 +21,7 @@ Designed, built and operated end to end, solo.
 
 ### Frameworks & Libraries
 
-<img src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white" /> <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black" /> <img src="https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" /> <img src="https://img.shields.io/badge/shadcn%2Fui-0F172A?style=flat-square&logo=shadcnui&logoColor=white" /> <img src="https://img.shields.io/badge/Framer%20Motion-0055FF?style=flat-square&logo=framer&logoColor=white" /> <img src="https://img.shields.io/badge/Three.js-000000?style=flat-square&logo=threedotjs&logoColor=white" /> <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white" /> <img src="https://img.shields.io/badge/Kivy-00B4D8?style=flat-square&logo=python&logoColor=white" />
+<img src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white" /> <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black" /> <img src="https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" /> <img src="https://img.shields.io/badge/shadcn%2Fui-0F172A?style=flat-square&logo=shadcnui&logoColor=white" /> <img src="https://img.shields.io/badge/Framer%20Motion-0055FF?style=flat-square&logo=framer&logoColor=white" /> <img src="https://img.shields.io/badge/Three.js-000000?style=flat-square&logo=threedotjs&logoColor=white" /> <img src="https://img.shields.io/badge/Strapi-4945FF?style=flat-square&logo=strapi&logoColor=white" /> <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white" />
 
 ### AI & Automation
 
@@ -33,13 +33,15 @@ Designed, built and operated end to end, solo.
 
 ### Databases & Cloud
 
-<img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white" /> <img src="https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white" /> <img src="https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white" /> <img src="https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white" />
+<img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white" /> <img src="https://img.shields.io/badge/SQLite-003B57?style=flat-square&logo=sqlite&logoColor=white" /> <img src="https://img.shields.io/badge/Cloudflare-F38020?style=flat-square&logo=cloudflare&logoColor=white" /> <img src="https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white" />
 
 ## 🚀 Currently shipping
 
-- **[WebPV](https://github.com/yimwired/WebPV)** · portfolio + *The Lab*, the same site rebuilt in six visual languages
+- **[WebPV](https://github.com/yimwired/WebPV)** · portfolio and *The Lab*: thirteen working directions a site can take, from real-time WebGL to a restaurant menu that knows whether the kitchen is open right now
+- **[llm-fusebox](https://github.com/yimwired/llm-fusebox)** · MIT Python library that prices an LLM call before you make it and blocks the one that would blow the budget. 96 tests, no runtime dependencies
 - **AURUM** · automated XAU/USD terminal, 12 strategy engines on MT5 with live risk controls
 - **Jarvis (Moon Fleet)** · multi-agent orchestrator, 11 specialised Claude agents behind one commander
+- **[PET Travel](https://github.com/yimwired/PET-travel)** · Next.js and Strapi tour booking site. I designed it, then brought it back from months of 500s and a git history full of leaked keys
 - **Affiliate Publisher** · one post to YouTube, TikTok, Shopee Shorts and Lemon8 at once
 - **You Are the Virus** · browser strategy game: infect, mutate, survive
 
@@ -51,5 +53,5 @@ Designed, built and operated end to end, solo.
 
 <img src="./assets/rule.svg" alt="" width="100%" />
 
-**Open for freelance web work** - fast turnaround, distinctive design, no templates.
-Start here: **[webpv.vercel.app](https://webpv.vercel.app)**
+**Open for freelance web work** - fixed price agreed before anything starts, no agency layer, and the repo is yours at handover.
+Start here: **[webpv.yimwired.workers.dev](https://webpv.yimwired.workers.dev)**

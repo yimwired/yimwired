@@ -21,15 +21,15 @@ const WIDE_CARD = { width: 860, height: 280 };
 const ASSETS_DIR = join(dirname(fileURLToPath(import.meta.url)), "..", "assets");
 
 const PALETTE = {
-  surface: "#08080C",
-  hairline: "#FFFFFF14",
-  label: "#52525B",
-  muted: "#71717A",
-  text: "#E4E4E7",
-  ramp: ["#818CF8", "#22D3EE", "#A78BFA", "#5EC8F0"],
-  rest: "#3F3F46",
+  surface: "#0A0A0A",
+  hairline: "#FFFFFF17",
+  label: "#6B6B6B",
+  muted: "#808080",
+  text: "#FAFAFA",
+  ramp: ["#BA7419", "#EFA555", "#FFBF6F", "#D48C3A"],
+  rest: "#3A3A3A",
   // Contribution heat, quietest to loudest.
-  heat: ["#15151B", "#312E81", "#4F46E5", "#22D3EE", "#67E8F9"],
+  heat: ["#161616", "#634628", "#9C672D", "#EFA555", "#FFBA72"],
 };
 
 const FONT_SANS =
@@ -271,9 +271,9 @@ function cardShell(body, size = CARD) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img">
   <defs>
     <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#818CF8"/>
-      <stop offset="50%" stop-color="#22D3EE"/>
-      <stop offset="100%" stop-color="#A78BFA"/>
+      <stop offset="0%" stop-color="#BA7419"/>
+      <stop offset="50%" stop-color="#EFA555"/>
+      <stop offset="100%" stop-color="#FFBF6F"/>
     </linearGradient>
   </defs>
   <rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="18"
