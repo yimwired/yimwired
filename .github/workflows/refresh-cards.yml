@@ -27,9 +27,14 @@ jobs:
         run: node scripts/build-cards.mjs
         env:
           # PROFILE_TOKEN is a personal token with read:user; it lets the
-          # contribution card count private work. Without it the card falls
-          # back to public commits and still builds.
-          GITHUB_TOKEN: ${{ secrets.PROFILE_TOKEN || secrets.GITHUB_TOKEN }}
+          # contribution card count private work. Both are passed rather than
+          # one falling back to the other in this expression: a PROFILE_TOKEN
+          # that has expired is still a non-empty secret, so `||` would keep
+          # choosing it and every run would 401. The script tries this one
+          # first and drops to the runner's own token when it is rejected,
+          # which has the rate limit an unauthenticated run does not.
+          GITHUB_TOKEN: ${{ secrets.PROFILE_TOKEN }}
+          ACTIONS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit only when a card actually changed
         run: |

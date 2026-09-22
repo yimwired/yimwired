@@ -6,7 +6,7 @@ Web experiences, AI agents, trading systems and content pipelines.
 Designed, built and operated end to end, solo.
 
 - 📍 Thailand · UTC+7
-- 🌐 Portfolio: **[webpv.yimwired.workers.dev](https://webpv.yimwired.workers.dev)** · try **[The Lab](https://webpv.yimwired.workers.dev/labs)**, the same site rebuilt thirteen ways
+- 🌐 Portfolio: **[webpv.yimwired.workers.dev](https://webpv.yimwired.workers.dev)** · try **[The Lab](https://webpv.yimwired.workers.dev/labs)**, the same site rebuilt twelve ways
 - 💼 Taking client work: **[what I build](https://webpv.yimwired.workers.dev/services)** · **[what it costs](https://webpv.yimwired.workers.dev/pricing)**
 
 ### 🤝 Contact me
@@ -37,7 +37,7 @@ Designed, built and operated end to end, solo.
 
 ## 🚀 Currently shipping
 
-- **[WebPV](https://github.com/yimwired/WebPV)** · portfolio and *The Lab*: thirteen working directions a site can take, from real-time WebGL to a restaurant menu that knows whether the kitchen is open right now
+- **[WebPV](https://github.com/yimwired/WebPV)** · portfolio and *The Lab*: twelve working directions a site can take, from real-time WebGL to a restaurant menu that knows whether the kitchen is open right now
 - **[llm-fusebox](https://github.com/yimwired/llm-fusebox)** · MIT Python library that prices an LLM call before you make it and blocks the one that would blow the budget. 96 tests, no runtime dependencies
 - **AURUM** · automated XAU/USD terminal, 12 strategy engines on MT5 with live risk controls
 - **Jarvis (Moon Fleet)** · multi-agent orchestrator, 11 specialised Claude agents behind one commander

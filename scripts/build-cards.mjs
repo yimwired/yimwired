@@ -38,12 +38,48 @@ const FONT_MONO = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
 
 /* ---------------------------------------------------------------- data ---- */
 
+/**
+ * Tokens in the order they are tried. The personal one sees private work, which
+ * is the whole reason it exists; the runner's own token sees none of it but has
+ * a rate limit, which sixty unauthenticated requests an hour is not: this
+ * script makes more than that in one run.
+ *
+ * Classic tokens expire, and an expired one is still a non-empty secret, so a
+ * run that insists on it 401s every night until someone looks at the Actions
+ * tab. Dropping to the next token keeps the cards current in the meantime; the
+ * contribution count falls back to public commits, which lands close.
+ */
+// Trimmed: a secret pasted with a trailing newline produces a header the API
+// answers 401 to, which looks exactly like an expired token.
+const TOKENS = [process.env.GITHUB_TOKEN, process.env.ACTIONS_TOKEN]
+  .map((token) => token?.trim())
+  .filter(Boolean);
+let tokenIndex = 0;
+
+/** True once the personal token has been rejected, so the calendar is out. */
+let tokenRejected = false;
+
 async function request(path) {
   const headers = { Accept: "application/vnd.github+json", "User-Agent": USER };
-  if (process.env.GITHUB_TOKEN) {
-    headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+  const token = TOKENS[tokenIndex];
+  if (token) headers.Authorization = `Bearer ${token}`;
+
+  const response = await fetch(`https://api.github.com${path}`, { headers });
+  if (response.status === 401 && token) {
+    tokenIndex += 1;
+    tokenRejected = true;
+    console.warn(
+      `A token was rejected (401) on ${path}. ` +
+        (TOKENS[tokenIndex]
+          ? "Trying the next one; private contributions will not be counted. "
+          : "No token left, continuing unauthenticated. ") +
+        "If this was PROFILE_TOKEN, issue a new classic token with read:user " +
+        "only and set it at " +
+        "https://github.com/yimwired/yimwired/settings/secrets/actions",
+    );
+    return request(path);
   }
-  return fetch(`https://api.github.com${path}`, { headers });
+  return response;
 }
 
 async function api(path) {
@@ -71,7 +107,7 @@ const CALENDAR_QUERY = `query($login: String!) {
  * so the caller can fall back to public commit dates.
  */
 async function fetchCalendar() {
-  if (!process.env.GITHUB_TOKEN) return null;
+  if (!process.env.GITHUB_TOKEN || tokenRejected) return null;
 
   const response = await fetch("https://api.github.com/graphql", {
     method: "POST",
