@@ -37,6 +37,9 @@ jobs:
           ACTIONS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit only when a card actually changed
+        env:
+          GITHUB_TOKEN: ${{ secrets.PROFILE_TOKEN }}
+          ACTIONS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           if [ -z "$(git status --porcelain assets)" ]; then
             echo "cards unchanged"
@@ -46,4 +49,26 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets
           git commit -m "chore: refresh profile cards"
-          git push
+
+          # A push to main while this job is running leaves the checkout on the
+          # old ref and the push is rejected. The cards are generated, not
+          # authored, so the answer is to take the newer ref and draw them
+          # again rather than to merge: whatever landed meanwhile is kept, and
+          # the cards on top of it are built from the same run's data.
+          for attempt in 1 2 3; do
+            if git push; then
+              exit 0
+            fi
+            echo "push rejected, rebuilding on top of origin/main (attempt $attempt)"
+            git fetch origin main
+            git reset --hard origin/main
+            node scripts/build-cards.mjs
+            git add assets
+            if git diff --cached --quiet; then
+              echo "cards already current on the new ref"
+              exit 0
+            fi
+            git commit -m "chore: refresh profile cards"
+          done
+          echo "could not push after three attempts"
+          exit 1
