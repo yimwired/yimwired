@@ -1,4 +1,4 @@
-<img src="./assets/banner.svg" alt="Film - solo builder: web, AI agents, trading systems" width="100%" />
+<img src="./assets/banner.svg" alt="Yim: websites you can try before you hire" width="100%" />
 
 ## I build things that ship
 
@@ -6,12 +6,12 @@ Web experiences, AI agents, trading systems and content pipelines.
 Designed, built and operated end to end, solo.
 
 - 📍 Thailand · UTC+7
-- 🌐 Portfolio: **[webpv.yimwired.workers.dev](https://webpv.yimwired.workers.dev)** · try **[The Lab](https://webpv.yimwired.workers.dev/labs)**, the same site rebuilt twelve ways
+- 🌐 Portfolio: **[webpv.yimwired.workers.dev](https://webpv.yimwired.workers.dev)** · try **[The Lab](https://webpv.yimwired.workers.dev/labs)**, the same site rebuilt <!-- site:labs -->fourteen<!-- /site:labs --> ways
 - 💼 Taking client work: **[what I build](https://webpv.yimwired.workers.dev/services)** · **[what it costs](https://webpv.yimwired.workers.dev/pricing)**
 
 ### 🤝 Contact me
 
-<a href="mailto:yimwired@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white" /></a> <a href="https://webpv.yimwired.workers.dev"><img src="https://img.shields.io/badge/Portfolio-EFA555?style=flat-square&logo=cloudflare&logoColor=1a1400" /></a> <a href="https://github.com/yimwired"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white" /></a> <a href="https://discord.com/users/839543342223589387"><img src="https://img.shields.io/badge/Discord-5865F2?style=flat-square&logo=discord&logoColor=white" /></a> <a href="https://www.facebook.com/share/1FG4y85ePs/"><img src="https://img.shields.io/badge/Facebook-1877F2?style=flat-square&logo=facebook&logoColor=white" /></a>
+<a href="mailto:yimwired@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=flat-square&logo=gmail&logoColor=white" /></a> <a href="https://webpv.yimwired.workers.dev"><img src="https://img.shields.io/badge/Portfolio-0D1734?style=flat-square&logo=cloudflare&logoColor=E3BD70" /></a> <a href="https://github.com/yimwired"><img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white" /></a> <a href="https://discord.com/users/839543342223589387"><img src="https://img.shields.io/badge/Discord-5865F2?style=flat-square&logo=discord&logoColor=white" /></a> <a href="https://www.facebook.com/share/1FG4y85ePs/"><img src="https://img.shields.io/badge/Facebook-1877F2?style=flat-square&logo=facebook&logoColor=white" /></a>
 
 ## 🛠️ Tech Stack
 
@@ -37,13 +37,12 @@ Designed, built and operated end to end, solo.
 
 ## 🚀 Currently shipping
 
-- **[WebPV](https://github.com/yimwired/WebPV)** · portfolio and *The Lab*: twelve working directions a site can take, from real-time WebGL to a restaurant menu that knows whether the kitchen is open right now
-- **[llm-fusebox](https://github.com/yimwired/llm-fusebox)** · MIT Python library that prices an LLM call before you make it and blocks the one that would blow the budget. 96 tests, no runtime dependencies
-- **AURUM** · automated XAU/USD terminal, 12 strategy engines on MT5 with live risk controls
-- **Jarvis (Moon Fleet)** · multi-agent orchestrator, 11 specialised Claude agents behind one commander
-- **[PET Travel](https://github.com/yimwired/PET-travel)** · Next.js and Strapi tour booking site. I designed it, then brought it back from months of 500s and a git history full of leaked keys
-- **Affiliate Publisher** · one post to YouTube, TikTok, Shopee Shorts and Lemon8 at once
-- **You Are the Virus** · browser strategy game: infect, mutate, survive
+- **[WebPV](https://github.com/yimwired/WebPV)** · portfolio and *The Lab*: <!-- site:labs -->fourteen<!-- /site:labs --> working directions a site can take, from real-time WebGL to a restaurant menu that knows whether the kitchen is open right now <!-- site:projects -->
+- **[AURUM](https://webpv.yimwired.workers.dev/work/aurum)** · Automated XAU/USD trading terminal
+- **[Product Dashboard](https://webpv.yimwired.workers.dev/work/product-dashboard)** · Product & content ops for Shopee
+- **[PET Travel](https://webpv.yimwired.workers.dev/work/pet-travel)** · Tour booking for Phuket, brought back from the dead
+- **[Affiliate](https://webpv.yimwired.workers.dev/work/affiliate)** · One post → every platform
+- **[Jarvis (Moon)](https://webpv.yimwired.workers.dev/work/jarvis-moon)** · Multi-agent AI fleet, one commander <!-- /site:projects -->
 
 ## 📊 GitHub Snapshot
 

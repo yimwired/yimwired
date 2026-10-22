@@ -20,20 +20,28 @@ const CARD = { width: 420, height: 236 };
 const WIDE_CARD = { width: 860, height: 280 };
 const ASSETS_DIR = join(dirname(fileURLToPath(import.meta.url)), "..", "assets");
 
+// WebPV's midnight zone (its `.dark` tokens), so the profile reads as the same
+// hand as the site: midnight ground, pearl ink, champagne gold as the one
+// accent. Contrast on the surface: text 16.3:1, muted 8.65:1, label 6.2:1.
 const PALETTE = {
-  surface: "#0A0A0A",
-  hairline: "#FFFFFF17",
-  label: "#6B6B6B",
-  muted: "#808080",
-  text: "#FAFAFA",
-  ramp: ["#BA7419", "#EFA555", "#FFBF6F", "#D48C3A"],
-  rest: "#3A3A3A",
-  // Contribution heat, quietest to loudest.
-  heat: ["#161616", "#634628", "#9C672D", "#EFA555", "#FFBA72"],
+  surface: "#0D1734",
+  hairline: "#FFFFFF1A",
+  label: "#8C9AB8",
+  muted: "#AAB6CD",
+  text: "#F7F6F1",
+  // Gold, deep to pale, for the dots that tell the recent repos apart.
+  ramp: ["#E3BD70", "#B8913F", "#F2DDAE", "#9C7A3C"],
+  rest: "#26314F",
+  // Contribution heat, quietest to loudest: an empty day a step above the
+  // surface, then the gold at a quarter, half, three quarters and full
+  // strength over midnight.
+  heat: ["#19244A", "#42403F", "#786A52", "#AD9361", "#E3BD70"],
 };
 
+// GitHub shows these cards through <img>, which cannot load a web font, so the
+// stack is the system's own sans-serif rather than the site's Google Sans.
 const FONT_SANS =
-  "Inter, ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif";
+  "ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif";
 const FONT_MONO = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
 
 /* ---------------------------------------------------------------- data ---- */
@@ -216,11 +224,16 @@ async function collectProfile() {
  * byte-weighted languages are dominated by one large static coursework repo,
  * which says nothing true about what this profile actually builds.
  */
+// Public repos kept off the profile on Film's call (2026-10-22): the profile
+// fronts the web work he sells, and an LLM budget library is not that.
+const HIDDEN_REPOS = new Set(["llm-fusebox"]);
+
 function recentlyPushed(repos, limit = 4) {
   return repos
     // The profile repo is excluded: the nightly card rebuild pushes to it, so it
     // would sit at the top of its own card every single day.
-    .filter((repo) => repo.name !== USER && repo.pushed_at && repo.size > 0)
+    .filter((repo) => repo.name !== USER && !HIDDEN_REPOS.has(repo.name))
+    .filter((repo) => repo.pushed_at && repo.size > 0)
     .sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at))
     .slice(0, limit)
     .map((repo) => ({
@@ -307,9 +320,9 @@ function cardShell(body, size = CARD) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img">
   <defs>
     <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#BA7419"/>
-      <stop offset="50%" stop-color="#EFA555"/>
-      <stop offset="100%" stop-color="#FFBF6F"/>
+      <stop offset="0%" stop-color="#E3BD70"/>
+      <stop offset="60%" stop-color="#E3BD70" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#E3BD70" stop-opacity="0"/>
     </linearGradient>
   </defs>
   <rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="18"
@@ -320,7 +333,7 @@ ${body}
 }
 
 function metric(x, y, value, label) {
-  return `  <text x="${x}" y="${y}" fill="${PALETTE.text}" font-family="${FONT_SANS}" font-size="34" font-weight="700">${value}</text>
+  return `  <text x="${x}" y="${y}" fill="${PALETTE.text}" font-family="${FONT_SANS}" font-size="34" font-weight="600">${value}</text>
   <text x="${x}" y="${y + 22}" fill="${PALETTE.muted}" font-family="${FONT_MONO}" font-size="11" letter-spacing="1.6">${label}</text>`;
 }
 
@@ -405,7 +418,7 @@ function renderContributionsCard(profile) {
   const row = metrics
     .map(([value, label], index) => {
       const x = 32 + index * 240;
-      return `  <text x="${x}" y="${106}" fill="${PALETTE.text}" font-family="${FONT_SANS}" font-size="32" font-weight="700">${value}</text>
+      return `  <text x="${x}" y="${106}" fill="${PALETTE.text}" font-family="${FONT_SANS}" font-size="32" font-weight="600">${value}</text>
   <text x="${x}" y="${128}" fill="${PALETTE.muted}" font-family="${FONT_MONO}" font-size="11" letter-spacing="1.6">${label}</text>`;
     })
     .join("\n");

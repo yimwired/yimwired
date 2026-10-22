@@ -1,5 +1,6 @@
 name: Refresh profile cards
 
+# Runs on GitHub's machines, so the profile stays current with Film's PC off.
 on:
   schedule:
     - cron: "17 3 * * *" # daily, 10:17 Bangkok time
@@ -8,6 +9,7 @@ on:
     branches: [main]
     paths:
       - scripts/build-cards.mjs
+      - scripts/sync-readme.mjs
       - .github/workflows/refresh-cards.yml
 
 permissions:
@@ -36,18 +38,23 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PROFILE_TOKEN }}
           ACTIONS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Commit only when a card actually changed
+      # The project list and the lab count in README.md follow the portfolio's
+      # profile.json; when the site cannot be read the README is left alone.
+      - name: Sync the README from the portfolio
+        run: node scripts/sync-readme.mjs
+
+      - name: Commit only when something actually changed
         env:
           GITHUB_TOKEN: ${{ secrets.PROFILE_TOKEN }}
           ACTIONS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [ -z "$(git status --porcelain assets)" ]; then
-            echo "cards unchanged"
+          if [ -z "$(git status --porcelain assets README.md)" ]; then
+            echo "cards and README unchanged"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets
+          git add assets README.md
           git commit -m "chore: refresh profile cards"
 
           # A push to main while this job is running leaves the checkout on the
@@ -63,7 +70,8 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             node scripts/build-cards.mjs
-            git add assets
+            node scripts/sync-readme.mjs
+            git add assets README.md
             if git diff --cached --quiet; then
               echo "cards already current on the new ref"
               exit 0
