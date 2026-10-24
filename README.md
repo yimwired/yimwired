@@ -44,6 +44,10 @@ Designed, built and operated end to end, solo.
 - **[Affiliate](https://webpv.yimwired.workers.dev/work/affiliate)** · One post → every platform
 - **[Jarvis (Moon)](https://webpv.yimwired.workers.dev/work/jarvis-moon)** · Multi-agent AI fleet, one commander <!-- /site:projects -->
 
+## 📡 Running right now
+
+<img src="./assets/status.svg" alt="Status of the systems that run on their own: the Shorts pipeline and the portfolio deploy, redrawn every morning" width="100%" />
+
 ## 📊 GitHub Snapshot
 
 <img src="./assets/stats.svg" alt="Public repos, commits, languages, code shipped" width="48%" /> <img src="./assets/activity.svg" alt="Recently pushed repositories" width="48%" />

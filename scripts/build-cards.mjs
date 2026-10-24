@@ -1,5 +1,7 @@
 /**
- * Builds the two stat cards shown in README.md straight from the GitHub API.
+ * Builds the cards shown in README.md straight from the GitHub API: the stat
+ * cards, the contribution heatmap, and the status card for the systems that
+ * run on their own.
  *
  * Self-hosting the cards keeps the profile alive: the popular third-party card
  * services go down or get rate limited, and a broken image on the profile page
@@ -18,6 +20,7 @@ const USER = "yimwired";
 // The first two cards sit side by side in the README, so they share one size.
 const CARD = { width: 420, height: 236 };
 const WIDE_CARD = { width: 860, height: 280 };
+const STATUS_CARD = { width: 860, height: 244 };
 const ASSETS_DIR = join(dirname(fileURLToPath(import.meta.url)), "..", "assets");
 
 // WebPV's midnight zone (its `.dark` tokens), so the profile reads as the same
@@ -305,6 +308,106 @@ function isOwnCommit(commit) {
   return OWN_AUTHOR_NAMES.has(commit.commit?.author?.name ?? "");
 }
 
+/* ------------------------------------------------------------- systems --- */
+
+// The status card reports on the systems that run with Film's PC off, from
+// what they leave in public: the Shorts pipeline commits one job file per video
+// to its queue, and every push to WebPV gets a Workers Builds check. Moon and
+// AURUM run on the home PC and publish nothing, so they are left off the card
+// rather than shown with numbers nobody can check.
+const SHORTS_REPO = "YoutubeShorts";
+const SITE_REPO = "WebPV";
+const SITE = "https://webpv.yimwired.workers.dev";
+const TIME_ZONE = "Asia/Bangkok";
+
+// Two shorts go live a day, uploaded a day ahead with a scheduled publish time,
+// so the newest 72 jobs cover the 30-day window with room to spare. A short
+// counts as live once that time has passed, not when it was uploaded.
+const SHORTS_WINDOW_DAYS = 30;
+const SHORTS_JOBS_READ = 72;
+// They publish at 08:00 and 12:00 Bangkok time; a longer silence is a missed day.
+const SHORTS_QUIET_HOURS = 36;
+
+const latest = (dates) => (dates.length ? new Date(Math.max(...dates)) : null);
+const earliest = (dates) => (dates.length ? new Date(Math.min(...dates)) : null);
+
+async function collectShorts(now) {
+  // The trees API lists the queue in one call. The contents API would too, but
+  // it stops at 1,000 entries and the queue only grows.
+  const { tree } = await api(`/repos/${USER}/${SHORTS_REPO}/git/trees/main:queue`);
+  const newestJobs = tree
+    .map((entry) => ({ path: entry.path, createdAt: Number(/^job_(\d+)_/.exec(entry.path)?.[1]) }))
+    .filter((job) => job.createdAt > 0)
+    .sort((a, b) => b.createdAt - a.createdAt)
+    .slice(0, SHORTS_JOBS_READ);
+
+  const publishTimes = [];
+  for (const job of newestJobs) {
+    // Raw files of a public repo do not count against the API's rate limit.
+    const url = `https://raw.githubusercontent.com/${USER}/${SHORTS_REPO}/main/queue/${job.path}`;
+    const response = await fetch(url, { headers: { "User-Agent": USER } });
+    if (!response.ok) throw new Error(`HTTP ${response.status} on queue/${job.path}`);
+
+    const { status, publish_at: publishAt } = await response.json();
+    if (status === "uploaded" && publishAt) publishTimes.push(new Date(publishAt));
+  }
+
+  const windowStart = now.getTime() - SHORTS_WINDOW_DAYS * DAY_MS;
+  const live = publishTimes.filter((time) => time <= now);
+
+  return {
+    liveInWindow: live.filter((time) => time.getTime() > windowStart).length,
+    lastLive: latest(live),
+    nextLive: earliest(publishTimes.filter((time) => time > now)),
+  };
+}
+
+async function collectSite() {
+  const { check_runs: checks } = await api(`/repos/${USER}/${SITE_REPO}/commits/main/check-runs`);
+  const build = checks.find((check) => check.name.startsWith("Workers Builds"));
+  if (!build) throw new Error("no Workers Builds check on main");
+
+  return {
+    status: build.status,
+    conclusion: build.conclusion,
+    finishedAt: build.completed_at ? new Date(build.completed_at) : null,
+    labs: await readLabCount(),
+  };
+}
+
+/** The lab count the site publishes about itself, or null when it cannot be read. */
+async function readLabCount() {
+  try {
+    const response = await fetch(`${SITE}/profile.json`, { headers: { "User-Agent": USER } });
+    if (!response.ok) return null;
+    const { labs } = await response.json();
+    return Number.isInteger(labs) && labs > 0 ? labs : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * A system whose status cannot be read gets a row that says so: one failed
+ * lookup should not cost every other card its morning refresh.
+ */
+async function settle(lookup, name) {
+  try {
+    return await lookup;
+  } catch (error) {
+    console.warn(`status: could not read ${name} (${error.message})`);
+    return null;
+  }
+}
+
+async function collectSystems(now = new Date()) {
+  return {
+    checkedAt: now,
+    shorts: await settle(collectShorts(now), "the Shorts queue"),
+    site: await settle(collectSite(), "the WebPV deploy"),
+  };
+}
+
 /* --------------------------------------------------------------- render --- */
 
 const escapeText = (value) =>
@@ -432,9 +535,90 @@ ${cells}`,
   );
 }
 
+// The card is redrawn once a morning, so it states clock times rather than
+// "6h ago", which would be wrong by evening.
+const bangkokTime = (date) =>
+  date.toLocaleString("en-GB", {
+    timeZone: TIME_ZONE,
+    day: "numeric",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  });
+
+function shortsRow(shorts, now) {
+  const row = {
+    name: "shorts",
+    about: "Thai explainer channel: researched, voiced and uploaded by a pipeline",
+  };
+  if (!shorts) return { ...row, ok: false, detail: "could not read the queue this morning" };
+
+  const quiet =
+    !shorts.lastLive || now - shorts.lastLive > SHORTS_QUIET_HOURS * 3_600_000;
+  const parts = [`${shorts.liveInWindow} live in the last ${SHORTS_WINDOW_DAYS} days`];
+  if (quiet) {
+    parts.push(shorts.lastLive ? `none since ${bangkokTime(shorts.lastLive)}` : "none live yet");
+  }
+  if (shorts.nextLive) parts.push(`next ${bangkokTime(shorts.nextLive)}`);
+
+  return { ...row, ok: !quiet, detail: parts.join(" · ") };
+}
+
+// Check-run conclusions, as a sentence would say them.
+const DEPLOY_OUTCOMES = { failure: "failed", timed_out: "timed out", action_required: "needs attention" };
+
+function siteRow(site) {
+  const row = {
+    name: "webpv",
+    about: site?.labs
+      ? `portfolio and ${site.labs} working labs, deployed on every push`
+      : "portfolio, deployed on every push",
+  };
+  if (!site) return { ...row, ok: false, detail: "could not read the latest deploy" };
+  if (site.status !== "completed") {
+    return { ...row, ok: true, detail: "deploying now; the previous build stays live until it lands" };
+  }
+
+  const when = site.finishedAt ? ` ${bangkokTime(site.finishedAt)}` : "";
+  if (site.conclusion === "success") return { ...row, ok: true, detail: `deployed${when}` };
+
+  const outcome = DEPLOY_OUTCOMES[site.conclusion] ?? String(site.conclusion).replace(/_/g, " ");
+  return { ...row, ok: false, detail: `last deploy ${outcome}${when}; the previous build is still live` };
+}
+
+function renderStatusCard(systems) {
+  const rows = [shortsRow(systems.shorts, systems.checkedAt), siteRow(systems.site)]
+    .map((row, index) => {
+      const y = 104 + index * 60;
+      // A system that is behind gets an empty ring as well as the words, so the
+      // card does not lean on colour alone.
+      const dot = row.ok
+        ? `<circle cx="37" cy="${y - 5}" r="4" fill="${PALETTE.ramp[0]}"/>`
+        : `<circle cx="37" cy="${y - 5}" r="3.5" fill="none" stroke="${PALETTE.muted}" stroke-width="1.5"/>`;
+
+      return `  ${dot}
+  <text x="52" y="${y}" fill="${PALETTE.text}" font-family="${FONT_MONO}" font-size="14">${row.name}</text>
+  <text x="140" y="${y}" fill="${PALETTE.text}" font-family="${FONT_SANS}" font-size="14">${escapeText(row.about)}</text>
+  <text x="140" y="${y + 22}" fill="${PALETTE.muted}" font-family="${FONT_MONO}" font-size="12">${escapeText(row.detail)}</text>`;
+    })
+    .join("\n");
+
+  const checked = `CHECKED ${bangkokTime(systems.checkedAt).toUpperCase()} BANGKOK · REDRAWN EVERY MORNING BY GITHUB ACTIONS`;
+
+  return cardShell(
+    `  <text x="32" y="46" fill="${PALETTE.label}" font-family="${FONT_MONO}" font-size="12" letter-spacing="1">~ $ ./status.sh</text>
+  <rect x="32" y="60" width="796" height="1.5" rx="0.75" fill="url(#brand)" opacity="0.75"/>
+${rows}
+  <text x="32" y="${STATUS_CARD.height - 26}" fill="${PALETTE.label}" font-family="${FONT_MONO}" font-size="11" letter-spacing="1.6">${checked}</text>`,
+    STATUS_CARD,
+  );
+}
+
 /* ----------------------------------------------------------------- main --- */
 
 const profile = await collectProfile();
+const systems = await collectSystems();
 await mkdir(ASSETS_DIR, { recursive: true });
 await writeFile(join(ASSETS_DIR, "stats.svg"), renderStatsCard(profile), "utf8");
 await writeFile(join(ASSETS_DIR, "activity.svg"), renderActivityCard(profile), "utf8");
@@ -443,11 +627,15 @@ await writeFile(
   renderContributionsCard(profile),
   "utf8",
 );
+await writeFile(join(ASSETS_DIR, "status.svg"), renderStatusCard(systems), "utf8");
 
 const { total, current, longest, fromCalendar } = profile.contributions;
+const { shorts, site } = systems;
 console.log(
   `cards rebuilt - ${profile.repoCount} repos, ${profile.commits} commits, ` +
     `${profile.languageCount} languages, ${profile.recent.length} recent pushes, ` +
     `${total} contributions (source: ${fromCalendar ? "calendar" : "public commits"}), ` +
-    `streak ${current}d current / ${longest}d longest`,
+    `streak ${current}d current / ${longest}d longest; ` +
+    `status: shorts ${shorts ? `${shorts.liveInWindow} live in 30d` : "unread"}, ` +
+    `webpv ${site ? (site.conclusion ?? site.status) : "unread"}`,
 );

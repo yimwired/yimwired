@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="244" viewBox="0 0 860 244" role="img">
+  <defs>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#E3BD70"/>
+      <stop offset="60%" stop-color="#E3BD70" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#E3BD70" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="0.5" y="0.5" width="859" height="243" rx="18"
+        fill="#0D1734" stroke="#FFFFFF1A"/>
+  <text x="32" y="46" fill="#8C9AB8" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" letter-spacing="1">~ $ ./status.sh</text>
+  <rect x="32" y="60" width="796" height="1.5" rx="0.75" fill="url(#brand)" opacity="0.75"/>
+  <circle cx="37" cy="99" r="4" fill="#E3BD70"/>
+  <text x="52" y="104" fill="#F7F6F1" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">shorts</text>
+  <text x="140" y="104" fill="#F7F6F1" font-family="ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="14">Thai explainer channel: researched, voiced and uploaded by a pipeline</text>
+  <text x="140" y="126" fill="#AAB6CD" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">57 live in the last 30 days · next 25 Oct, 08:00</text>
+  <circle cx="37" cy="159" r="4" fill="#E3BD70"/>
+  <text x="52" y="164" fill="#F7F6F1" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="14">webpv</text>
+  <text x="140" y="164" fill="#F7F6F1" font-family="ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="14">portfolio and 14 working labs, deployed on every push</text>
+  <text x="140" y="186" fill="#AAB6CD" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">deployed 24 Oct, 02:23</text>
+  <text x="32" y="218" fill="#8C9AB8" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="11" letter-spacing="1.6">CHECKED 24 OCT, 18:03 BANGKOK · REDRAWN EVERY MORNING BY GITHUB ACTIONS</text>
+</svg>
