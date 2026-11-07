@@ -6,7 +6,7 @@ Web experiences, AI agents, trading systems and content pipelines.
 Designed, built and operated end to end, solo.
 
 - 📍 Thailand · UTC+7
-- 🌐 Portfolio: **[webpv.yimwired.workers.dev](https://webpv.yimwired.workers.dev)** · try **[The Lab](https://webpv.yimwired.workers.dev/labs)**, the same site rebuilt <!-- site:labs -->fourteen<!-- /site:labs --> ways
+- 🌐 Portfolio: **[webpv.yimwired.workers.dev](https://webpv.yimwired.workers.dev)** · try **[The Lab](https://webpv.yimwired.workers.dev/labs)**, the same site rebuilt <!-- site:labs -->fifteen<!-- /site:labs --> ways
 - 💼 Taking client work: **[what I build](https://webpv.yimwired.workers.dev/services)** · **[what it costs](https://webpv.yimwired.workers.dev/pricing)**
 
 ### 🤝 Contact me
@@ -37,7 +37,7 @@ Designed, built and operated end to end, solo.
 
 ## 🚀 Currently shipping
 
-- **[WebPV](https://github.com/yimwired/WebPV)** · portfolio and *The Lab*: <!-- site:labs -->fourteen<!-- /site:labs --> working directions a site can take, from real-time WebGL to a restaurant menu that knows whether the kitchen is open right now <!-- site:projects -->
+- **[WebPV](https://github.com/yimwired/WebPV)** · portfolio and *The Lab*: <!-- site:labs -->fifteen<!-- /site:labs --> working directions a site can take, from real-time WebGL to a restaurant menu that knows whether the kitchen is open right now <!-- site:projects -->
 - **[AURUM](https://webpv.yimwired.workers.dev/work/aurum)** · Automated XAU/USD trading terminal
 - **[Product Dashboard](https://webpv.yimwired.workers.dev/work/product-dashboard)** · Product & content ops for Shopee
 - **[PET Travel](https://webpv.yimwired.workers.dev/work/pet-travel)** · Tour booking for Phuket, brought back from the dead
